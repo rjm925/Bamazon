@@ -107,8 +107,8 @@ function keepShopping() {
 }
 
 function done() {
-  console.log("\nThank you for shopping");
-  console.log("Items purchased\n");
+  console.log("\nThank you for shopping!");
+  console.log("\nITEMS PURCHASED:");
 
   var cost = 0;
   for (var i = 0; i < bought.length; i++) {
