@@ -16,7 +16,7 @@ var connection = mysql.createConnection({
 });
 
 function getID() {
-  connection.query("SELECT item_id, product_name, price FROM products", function(err, result, fields) {
+  connection.query("SELECT item_id, product_name, price FROM products WHERE stock_quantity > 0", function(err, result, fields) {
     if (err) throw err;
 
     console.log("\n");
