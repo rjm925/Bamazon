@@ -1,5 +1,6 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
+require("console.table");
 
 var connection = mysql.createConnection({
   host: "localhost",
@@ -25,41 +26,32 @@ function menu() {
 	])
 	.then(function(response) {
 		if (response.action === "View Products for Sale") {
-		  connection.query("SELECT * FROM products", function(err, result) {
+		  connection.query("SELECT item_id, product_name, price, stock_quantity FROM products", function(err, result) {
 		    if (err) throw err;
 		    console.log("\n");
-		    for (var i = 0; i < result.length; i++) {
-		    	console.log("Item ID: " + result[i].item_id + " Product Name: " + result[i].product_name + " Price: $" + result[i].price + " Stock Quantity: " + result[i].stock_quantity);
-		    }
-		    console.log("\n");
+		    console.table(result);
 		    menu();
 		  });
 		}
 		else if (response.action === "View Low Inventory") {
-			connection.query("SELECT * FROM products WHERE stock_quantity < 5", function(err, result) {
+			connection.query("SELECT item_id, product_name, stock_quantity FROM products WHERE stock_quantity < 5", function(err, result) {
 			    if (err) throw err;
 			    console.log("\n");
 			    if (result.length === 0) {
 			    	console.log("All products have at least 5 in stock");
 			    }
 			    else {
-			    	for (var i = 0; i < result.length; i++) {
-				    	console.log("Item ID: " + result[i].item_id + " Product Name: " + result[i].product_name + " Stock Quantity: " + result[i].stock_quantity);
-				    }
+			    	console.table(result);
 			    }
-			    console.log("\n");
 			    menu();
 			  });
 		}
 		else if (response.action === "Add to Inventory") {
-			connection.query("SELECT * FROM products", function(err, result) {
+			connection.query("SELECT item_id, product_name, price, stock_quantity FROM products", function(err, result) {
 		    if (err) throw err;
 		    console.log("\n");
-		    for (var i = 0; i < result.length; i++) {
-		    	console.log("Item ID: " + result[i].item_id + " Product Name: " + result[i].product_name + " Price: $" + result[i].price + " Stock Quantity: " + result[i].stock_quantity);
-		    }
-		    console.log("\n");
-
+		    console.table(result);
+		    
 		    inquirer
 				.prompt([
 					{

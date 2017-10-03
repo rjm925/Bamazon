@@ -1,5 +1,6 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
+require("console.table");
 
 var connection = mysql.createConnection({
   host: "localhost",
@@ -28,10 +29,7 @@ function menu() {
 			var sql = "SELECT departments.*, SUM(IFNULL(products.product_sales, 0)) AS product_sales, (SUM(IFNULL(products.product_sales, 0)) - departments.over_head_costs) AS total_profit FROM departments LEFT JOIN products ON departments.department_name = products.department_name GROUP BY departments.department_name ORDER BY department_id;"
 			connection.query(sql, function(err, result) {
 				console.log("\n");
-				for (var i = 0; i < result.length; i++) {
-					console.log("Department ID: " + result[i].department_id + " Department Name: " + result[i].department_name + " Over Head Cost: " + result[i].over_head_costs + " Product Sales: " + result[i].product_sales + " Total Profit: " + result[i].total_profit);
-				}
-				console.log("\n");
+				console.table(result);
 				menu();
 			})
 		}

@@ -1,5 +1,6 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
+require("console.table");
 var bought = [];
 
 var connection = mysql.createConnection({
@@ -15,16 +16,11 @@ var connection = mysql.createConnection({
 });
 
 function getID() {
-  connection.query("SELECT * FROM products", function(err, result, fields) {
+  connection.query("SELECT item_id, product_name, price FROM products", function(err, result, fields) {
     if (err) throw err;
 
     console.log("\n");
-    for (var i = 0; i < result.length; i++) {
-      if (result[i].stock_quantity !== 0) {
-        console.log("Item ID: " + result[i].item_id + " Product Name: " + result[i].product_name + " Price: $" + result[i].price);
-      }
-    }
-    console.log("\n");
+    console.table(result);
 
     inquirer
     .prompt([
@@ -80,7 +76,7 @@ function checkStock(id) {
         connection.query(sql, function (err, result) {
           if (err) throw err;
         });
-        bought.push({name: result[0].product_name, quantity: purchase.quantity, cost: result[0].price * purchase.quantity});
+        bought.push({product: result[0].product_name, quantity: purchase.quantity, cost: result[0].price * purchase.quantity});
         keepShopping();
       }
     })
@@ -107,12 +103,12 @@ function keepShopping() {
 }
 
 function done() {
-  console.log("\nThank you for shopping!");
-  console.log("\nITEMS PURCHASED:");
+  console.log("\nThank you for shopping!\n");
+
+  console.table(bought);
 
   var cost = 0;
   for (var i = 0; i < bought.length; i++) {
-    console.log("Product Name: " + bought[i].name + " Quantity: " + bought[i].quantity + " Cost: $" + bought[i].cost);
     cost += bought[i].cost;
   }
   console.log("Total Cost: $" + cost);
