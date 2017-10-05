@@ -22,6 +22,11 @@ function getID() {
     console.log("\n");
     console.table(result);
 
+    if (result.length === 0) {
+      console.log("Out of everything!");
+      return connection.end();
+    }
+
     inquirer
     .prompt([
       {
@@ -29,7 +34,13 @@ function getID() {
         message: "What is the ID number of the item you would like?",
         name: "id",
         validate: function(value) {
-          if (isNaN(value) === false && parseInt(value) > 0 && parseInt(value) <= result.length) {
+          var validID = false;
+          for(var i = 0; i < result.length; i++) {
+            if (parseInt(value) === result[i].item_id) {
+              validID = true;
+            }
+          }
+          if (validID) {
             return true;
           }
           return false;
@@ -37,8 +48,6 @@ function getID() {
       }
     ])
     .then(function(response) {
-      console.log("\nItem Selected: " + result[response.id-1].product_name + "\n");
-
       checkStock(response.id);
     });
   });
@@ -47,6 +56,8 @@ function getID() {
 function checkStock(id) {
   connection.query("SELECT * FROM products WHERE item_id = " + id, function(err, result) {
     if (err) throw err;
+
+    console.log("\nItem Selected: " + result[0].product_name + "\n");
 
     inquirer
     .prompt([
