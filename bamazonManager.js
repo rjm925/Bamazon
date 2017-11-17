@@ -1,9 +1,9 @@
-var mysql = require("mysql");
-var inquirer = require("inquirer");
+const mysql = require("mysql");
+const inquirer = require("inquirer");
 require("console.table");
 
 // Connect to MySQL database
-var connection = mysql.createConnection({
+const connection = mysql.createConnection({
   host: "localhost",
   port: 3306,
 
@@ -98,8 +98,8 @@ function menu() {
 				  connection.query("SELECT item_id, stock_quantity FROM products WHERE item_id = " + response.id, function(err, result) {
   					if (err) throw err;
   					// Gets quantity of item form database and adds manager input
-  					var newQuantity = result[0].stock_quantity + parseInt(response.quantity);
-					  var sql = "UPDATE products SET stock_quantity = " + newQuantity + " WHERE item_id = " + response.id;
+  					let newQuantity = result[0].stock_quantity + parseInt(response.quantity);
+					  let sql = "UPDATE products SET stock_quantity = " + newQuantity + " WHERE item_id = " + response.id;
 			        connection.query(sql, function (err, result) {
 			          if (err) throw err;
 			        });
@@ -125,9 +125,9 @@ function menu() {
 							message: "Name of product:",
 							name: "product_name",
 							validate: function(value) {
-								var repeat = false;
+								let repeat = false;
 								// Checks if new item
-								for (var i = 0; i < result.length; i++) {
+								for (let i = 0; i < result.length; i++) {
 									if (result[i].product_name.toUpperCase() === value.toUpperCase()) {
 										repeat = true;
 									}
@@ -143,9 +143,9 @@ function menu() {
 							message: "Department of product:",
 							name: "department_name",
 							validate: function(value) {
-								var exist = false;
+								let exist = false;
 								// Checks if department exists
-								for (var i = 0; i < res.length; i++) {
+								for (let i = 0; i < res.length; i++) {
 									if (res[i].department_name.toUpperCase() === value.toUpperCase()) {
 										exist = true;
 									}
@@ -182,7 +182,7 @@ function menu() {
 						}
 					])
 					.then(function(response) {
-					  var sql = "INSERT INTO products (product_name, department_name, price, stock_quantity) VALUES ('" + response.product_name + "', '" + response.department_name + "', " + parseInt(response.price) +", " + parseInt(response.stock_quantity) +");";
+					  let sql = "INSERT INTO products (product_name, department_name, price, stock_quantity) VALUES ('" + response.product_name + "', '" + response.department_name + "', " + parseInt(response.price) +", " + parseInt(response.stock_quantity) +");";
 					  // Adds item to products table
 					  connection.query(sql, function(err, res) {
 					    if (err) throw err;

@@ -7,7 +7,7 @@
 A CLI application for a store that uses MySQL database. The user can be a customer, manager, or supervisor.
 * Customer - Buy items
 * Manager - View products, check low inventory, add stock to product, or add new product to store
-* Supervisor - View product sales by department or create new department
+* Supervisor - View product sales by department or create a new department
 
 # Start
 npm install

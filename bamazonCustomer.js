@@ -1,10 +1,10 @@
-var mysql = require("mysql");
-var inquirer = require("inquirer");
+const mysql = require("mysql");
+const inquirer = require("inquirer");
 require("console.table");
-var bought = [];
+let bought = [];
 
 // Connect to MySQL database
-var connection = mysql.createConnection({
+const connection = mysql.createConnection({
   host: "localhost",
   port: 3306,
 
@@ -41,8 +41,8 @@ function getID() {
         name: "id",
         // Checks if input is an ID of a number
         validate: function(value) {
-          var validID = false;
-          for(var i = 0; i < result.length; i++) {
+          let validID = false;
+          for(let i = 0; i < result.length; i++) {
             if (parseInt(value) === result[i].item_id) {
               validID = true;
             }
@@ -97,11 +97,11 @@ function checkStock(id) {
       else {
         console.log("\nTotal cost: $" + result[0].price * purchase.quantity + "\n");
         // Calculates remaining quantity of store
-        var newQuantity = result[0].stock_quantity - purchase.quantity;
+        let newQuantity = result[0].stock_quantity - purchase.quantity;
         // Calculates total sales of product
-        var newSales = result[0].product_sales + result[0].price * purchase.quantity;
+        let newSales = result[0].product_sales + result[0].price * purchase.quantity;
         // Updates products table
-        var sql = "UPDATE products SET stock_quantity = " + newQuantity + ", product_sales = " + newSales + " WHERE item_id = " + id;
+        let sql = "UPDATE products SET stock_quantity = " + newQuantity + ", product_sales = " + newSales + " WHERE item_id = " + id;
         connection.query(sql, function (err, result) {
           if (err) throw err;
         });
@@ -142,8 +142,8 @@ function done() {
 
   console.table(bought);
 
-  var cost = 0;
-  for (var i = 0; i < bought.length; i++) {
+  let cost = 0;
+  for (let i = 0; i < bought.length; i++) {
     cost += bought[i].cost;
   }
   console.log("Total Cost: $" + cost);
