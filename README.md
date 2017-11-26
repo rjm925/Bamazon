@@ -1,7 +1,5 @@
 # Bamazon
 
-[Link to Repo](https://github.com/rjm925/Bamazon)
-
 [Video Demo](https://drive.google.com/open?id=0B8v0hg3dZoMvbjRxYkhjV05UQlE)
 
 A CLI application for a store that uses MySQL database. The user can be a customer, manager, or supervisor.
